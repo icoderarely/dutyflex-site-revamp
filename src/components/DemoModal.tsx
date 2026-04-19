@@ -27,8 +27,7 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
 
     const dialogElement = dialogRef.current;
     const previousActiveElement = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.classList.add("modal-open");
 
     const focusables = getFocusableElements(dialogElement);
     (focusables[0] ?? dialogElement).focus();
@@ -69,7 +68,7 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("modal-open");
       previousActiveElement?.focus();
     };
   }, [open, onClose]);
@@ -93,13 +92,13 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="demo-modal-title"
-        className={`w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(15,23,42,0.3)] transition-all duration-200 focus:outline-none ${
+        className={`max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-y-auto [-webkit-overflow-scrolling:touch] rounded-2xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(15,23,42,0.3)] transition-all duration-200 focus:outline-none ${
           open ? "translate-y-0 scale-100" : "translate-y-4 scale-[0.98]"
         }`}
         tabIndex={-1}
       >
         <div className="grid lg:grid-cols-2">
-          <div className="border-b border-slate-200 bg-slate-50 p-4 lg:border-b-0 lg:border-r lg:p-6">
+          <div className="hidden border-b border-slate-200 bg-slate-50 p-4 sm:block lg:border-b-0 lg:border-r lg:p-6">
             <div className="h-full overflow-hidden rounded-xl border border-slate-200 bg-white">
               <img
                 src={DEMO_MODAL_IMAGE_URL}
