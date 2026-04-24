@@ -17,7 +17,7 @@ export function ContactSection() {
 
               <div className="space-y-3">
                 <h2 className="font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-                  Get a free consultancy from our expert right now!
+                  Get a free consultation with Our Experts!
                 </h2>
                 <p className="max-w-xl text-base leading-7 text-slate-600">
                   Tell us about your operations and we will guide you on the
