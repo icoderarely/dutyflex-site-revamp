@@ -1,11 +1,8 @@
-import heroImage from "../assets/image.png";
-
 export const DUTYFLEX_LOGO_URL =
   "https://raw.githubusercontent.com/intelligic/Project-Assets/main/Dutyflex/logo.png";
 
 export const DUTYFLEX_HERO_IMAGE_URL =
-  // "https://raw.githubusercontent.com/intelligic/Project-Assets/main/Dutyflex/Hero.png";
-  heroImage;
+  "https://raw.githubusercontent.com/intelligic/Project-Assets/main/Dutyflex/Hero.png";
 
 export const DUTYFLEX_WEB_APP_IMAGE_URL =
   "https://raw.githubusercontent.com/intelligic/Project-Assets/main/Dutyflex/WebAppImg.png";

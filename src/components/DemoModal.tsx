@@ -1,13 +1,68 @@
-import { useEffect, useRef } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
 import { DEMO_MODAL_IMAGE_URL } from "../data/assets";
+import { EMAILJS_ENV_MISSING_CODE, sendEmail } from "../lib/emailService";
 import { Button } from "./ui/button";
 
 type DemoModalProps = {
   open: boolean;
   onClose: () => void;
 };
+
+type DemoFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  employees: string;
+};
+
+const initialDemoValues: DemoFormValues = {
+  name: "",
+  email: "",
+  phone: "",
+  company: "",
+  employees: "",
+};
+
+const NAME_REGEX = /^[A-Za-z ]+$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\d{10}$/;
+const CALENDLY_BOOKING_URL = "https://calendly.com/dutyflex17/dutyflex-meeting";
+
+function getDemoFormError(values: DemoFormValues) {
+  const name = values.name.trim();
+  const email = values.email.trim();
+  const phone = values.phone.trim();
+  const company = values.company.trim();
+
+  if (!name) {
+    return "Please enter your name.";
+  }
+
+  if (!NAME_REGEX.test(name)) {
+    return "Name can only contain letters and spaces.";
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    return "Please enter a valid email address.";
+  }
+
+  if (!PHONE_REGEX.test(phone)) {
+    return "Phone number must be exactly 10 digits.";
+  }
+
+  if (!company) {
+    return "Please enter your company name.";
+  }
+
+  if (!values.employees) {
+    return "Please select number of employees.";
+  }
+
+  return null;
+}
 
 function getFocusableElements(container: HTMLElement) {
   return Array.from(
@@ -19,6 +74,9 @@ function getFocusableElements(container: HTMLElement) {
 
 export function DemoModal({ open, onClose }: DemoModalProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const [values, setValues] = useState<DemoFormValues>(initialDemoValues);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open || !dialogRef.current) {
@@ -72,6 +130,60 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
       previousActiveElement?.focus();
     };
   }, [open, onClose]);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    setErrorMessage(null);
+
+    const validationError = getDemoFormError(values);
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await sendEmail({
+        type: "Book Demo",
+        name: values.name.trim(),
+        email: values.email.trim(),
+        phone: values.phone.trim(),
+        company: values.company.trim(),
+        employees: values.employees,
+      });
+
+      window.open(
+        `${CALENDLY_BOOKING_URL}?name=${encodeURIComponent(values.name.trim())}&email=${encodeURIComponent(values.email.trim())}`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+
+      window.alert("Redirecting to booking...");
+      setValues(initialDemoValues);
+      onClose();
+    } catch (error) {
+      if (
+        import.meta.env.DEV &&
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        error.code === EMAILJS_ENV_MISSING_CODE
+      ) {
+        setErrorMessage("Email service is not configured.");
+      } else {
+        setErrorMessage("Unable to submit right now. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div
@@ -137,13 +249,7 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
               suitable slot.
             </p>
 
-            <form
-              className="mt-6 space-y-4"
-              onSubmit={(event) => {
-                event.preventDefault();
-                onClose();
-              }}
-            >
+            <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="space-y-1.5 text-sm font-medium text-slate-700">
                   <span>Name</span>
@@ -151,6 +257,13 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                     required
                     type="text"
                     name="name"
+                    value={values.name}
+                    onChange={(event) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        name: event.target.value,
+                      }))
+                    }
                     placeholder="John Doe"
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-teal-300 transition focus:border-teal-500 focus:ring-2"
                   />
@@ -162,6 +275,13 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                     required
                     type="email"
                     name="email"
+                    value={values.email}
+                    onChange={(event) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        email: event.target.value,
+                      }))
+                    }
                     placeholder="john@company.com"
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-teal-300 transition focus:border-teal-500 focus:ring-2"
                   />
@@ -175,7 +295,17 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                     required
                     type="tel"
                     name="phone"
-                    placeholder="+1 555 012 3456"
+                    value={values.phone}
+                    onChange={(event) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        phone: event.target.value,
+                      }))
+                    }
+                    inputMode="numeric"
+                    pattern="\\d{10}"
+                    maxLength={10}
+                    placeholder="8888888888"
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-teal-300 transition focus:border-teal-500 focus:ring-2"
                   />
                 </label>
@@ -186,6 +316,13 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                     required
                     type="text"
                     name="company"
+                    value={values.company}
+                    onChange={(event) =>
+                      setValues((prev) => ({
+                        ...prev,
+                        company: event.target.value,
+                      }))
+                    }
                     placeholder="DutyFlex Security"
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-teal-300 transition focus:border-teal-500 focus:ring-2"
                   />
@@ -197,7 +334,13 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                 <select
                   required
                   name="employees"
-                  defaultValue=""
+                  value={values.employees}
+                  onChange={(event) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      employees: event.target.value,
+                    }))
+                  }
                   className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-teal-300 transition focus:border-teal-500 focus:ring-2"
                 >
                   <option value="" disabled>
@@ -211,9 +354,24 @@ export function DemoModal({ open, onClose }: DemoModalProps) {
                 </select>
               </label>
 
-              <Button type="submit" size="lg" className="mt-2 w-full sm:w-auto">
-                Book Slot
+              <Button
+                type="submit"
+                size="lg"
+                className="mt-2 w-full sm:w-auto"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Book Slot"}
               </Button>
+
+              {errorMessage ? (
+                <p
+                  className="text-sm text-red-600"
+                  role="alert"
+                  aria-live="polite"
+                >
+                  {errorMessage}
+                </p>
+              ) : null}
             </form>
           </div>
         </div>

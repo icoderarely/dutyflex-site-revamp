@@ -75,33 +75,33 @@ export const platformCapabilities = {
       "A central workspace for operations, HR, and finance teams managing multiple client sites.",
     points: [
       {
-        title: "Operational visibility",
+        title: "Attendance tracking and reporting",
         description:
-          "Monitor shift coverage and attendance consistency across all client locations.",
+          "Monitor daily attendance across sites and generate reports without manual effort.",
         bullets: [
-          "Dashboard insights and trend analytics",
-          "Workforce deployment status by site",
-          "Live attendance tracking and export",
+          "Track attendance live across all client sites",
+          "Export clear reports for operations and finance",
+          "Review attendance trends to plan staffing better",
         ],
       },
       {
-        title: "Administrative control",
+        title: "Access and site control",
         description:
-          "Control access, client onboarding, and site setup with role-based permissions.",
+          "Set up clients and sites quickly while keeping responsibilities clear.",
         bullets: [
-          "Admin panel with role-based permissions",
-          "Client onboarding and lifecycle management",
-          "Client-site mapping and configuration",
+          "Give the right access to the right people",
+          "Connect clients to sites without manual work",
+          "Onboard and manage clients in one workflow",
         ],
       },
       {
-        title: "Business workflows",
+        title: "Billing and payroll workflows",
         description:
-          "Generate reporting, billing, and payroll inputs directly from verified attendance.",
+          "Turn verified attendance into faster billing and payroll with less rework.",
         bullets: [
-          "Invoice-ready attendance reporting",
-          "Payroll preparation and reconciliation",
-          "Compliance-oriented audit trails",
+          "Create invoice-ready attendance reports",
+          "Prepare payroll with fewer manual checks",
+          "Keep clear activity history for audits and disputes",
         ],
       },
     ],
@@ -112,33 +112,33 @@ export const platformCapabilities = {
       "Built for guards and field supervisors who need fast, verifiable workflows on duty.",
     points: [
       {
-        title: "Verified attendance in the field",
+        title: "Multiple language support",
         description:
-          "Record attendance at the correct place and time with minimal effort for guards.",
+          "Help every guard use the app confidently in their preferred language.",
         bullets: [
-          "GPS-verified attendance tracking",
-          "QR checkpoint scanning",
-          "Attendance logs and history access",
+          "Use the app in multiple languages",
+          "Reduce training time for new team members",
+          "Keep daily workflows consistent across sites",
         ],
       },
       {
-        title: "Daily operational context",
+        title: "GPS-verified attendance",
         description:
-          "Give teams site and assignment context without routing every update through dispatch.",
+          "Confirm attendance at the right place and time during every shift.",
         bullets: [
-          "Site information and assignment details",
-          "HR profile and role information",
-          "Structured shift records for accountability",
+          "Verify check-ins with live location",
+          "Keep accurate attendance logs and history",
+          "Improve accountability for field teams",
         ],
       },
       {
-        title: "Adoption across teams",
+        title: "QR-based checkpoint systems",
         description:
-          "Support multilingual teams with a clean interface that is easy to onboard quickly.",
+          "Capture checkpoint activity quickly so supervisors can trust on-ground updates.",
         bullets: [
-          "Multi-language interface support",
-          "Low-friction daily usage",
-          "Consistent workflows across sites",
+          "Scan QR checkpoints in seconds",
+          "Record checkpoint activity with less manual follow-up",
+          "Support smooth field operations during patrols",
         ],
       },
     ],

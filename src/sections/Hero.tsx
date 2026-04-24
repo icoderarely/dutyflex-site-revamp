@@ -19,11 +19,11 @@ export function Hero({ onOpenDemo }: HeroProps) {
         <Reveal className="space-y-8">
           <div className="space-y-5">
             <Badge variant="accent" className="w-fit">
-              Cloud-based Security Guard Management SaaS
+              Built for Modern Security Teams
             </Badge>
             <div className="space-y-4">
               <h1 className="max-w-2xl font-display text-5xl font-semibold tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
-                Automate scheduling, attendance, payroll reports, and invoicing.
+                A cloud-based Security Guard Management SaaS platform.
               </h1>
               <p className="max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">
                 DutyFlex helps security companies, residential teams, and

@@ -57,7 +57,12 @@ export function TwoColumnFeatures({
         </div>
       </div>
 
-      <div className={cn(imageSide === "left" && "lg:order-1")}>
+      <div
+        className={cn(
+          imageSide === "left" && "lg:order-1",
+          imageSide === "right" && "lg:pt-6 xl:pt-8",
+        )}
+      >
         <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
           <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-50">
             <img
