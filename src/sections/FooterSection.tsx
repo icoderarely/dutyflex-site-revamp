@@ -15,9 +15,21 @@ export function FooterSection() {
             alt="DutyFlex logo"
             className="h-7 w-auto object-contain"
           />
-          <p className="text-xs text-slate-500 sm:text-sm">
-            All rights reserved ® dutyflex.com {year}
-          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 sm:flex-nowrap sm:justify-start sm:text-sm">
+            <span>© {year} DutyFlex — a product of Intelligic Solutions</span>
+            <a
+              href="https://intelligic.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex transition-opacity hover:opacity-80"
+            >
+              <img
+                src="https://media.licdn.com/dms/image/v2/C4E0BAQFr_R3i8VJMNg/company-logo_200_200/company-logo_200_200/0/1630616276056?e=1778716800&v=beta&t=l94CHKZUjoRqObQf1zYphmUtmfE_eyfsX6FkP6B3Ubk"
+                alt="Intelligic Solutions"
+                className="h-5 w-auto object-contain"
+              />
+            </a>
+          </div>
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 sm:text-sm">
